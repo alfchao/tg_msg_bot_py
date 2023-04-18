@@ -29,19 +29,6 @@ def create_app():
             # 获取sendkey  title  desc
             sendkey = request.args.get('sendkey')
             text = request.args.get('text')
-            # 检查sendkey
-            if not sendkey:
-                return 'sendkey不能为空'
-            if not text:
-                return 'title不能为空'
-            # 获取用户id
-            send_user, user_key = sendkey.split('T', 1)
-            # 检查sendkey
-            if user_key != hashlib.md5((send_user + SALT).encode('utf-8')).hexdigest():
-                return 'sendkey不正确'
-            # 发送消息
-            send_message(send_user, text)
-            return 'ok'
         elif request.method == 'POST':
             # 判断请求体是否是json
             if not request.is_json:
@@ -49,6 +36,19 @@ def create_app():
             # 获取sendkey  title  desc
             sendkey = request.json.get('sendkey')
             text = request.json.get('text')
+        # 检查sendkey
+        if not sendkey:
+            return 'sendkey不能为空'
+        if not text:
+            return 'title不能为空'
+        # 获取用户id
+        send_user, user_key = sendkey.split('T', 1)
+        # 检查sendkey
+        if user_key != hashlib.md5((send_user + SALT).encode('utf-8')).hexdigest():
+            return 'sendkey不正确'
+        # 发送消息
+        send_message(send_user, text)
+        return 'ok'
 
     # receive message from telegram
     @app.route('/api', methods=['POST'])
