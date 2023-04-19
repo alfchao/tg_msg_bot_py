@@ -4,5 +4,15 @@
       "source": "/(.*)",
       "destination": "/api/index"
     }
+  ],
+  "regions": [
+    "hkg1"
+  ],
+  "trailingSlash": false,
+  "crons": [
+    {
+      "path": "/",
+      "schedule": "6 6 1 * *"
+    }
   ]
 }
