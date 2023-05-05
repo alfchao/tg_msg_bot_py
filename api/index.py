@@ -7,17 +7,17 @@
 
 """
 import hashlib
-import json
 import traceback
 
 from flask import Flask, request
 
 from api.env import *
-from api.utils import send_message, set_webhook
+from api.utils import send_message, set_webhook, set_bot_commands, json_p
 
 
 def create_app():
     set_webhook()
+    set_bot_commands()
 
     app = Flask(__name__)
 
@@ -88,6 +88,7 @@ def create_app():
         except:
             print(traceback.format_exc())
             ret['code'] = 1
+        json_p(ret)
         return ret
 
     return app

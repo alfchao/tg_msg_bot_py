@@ -30,6 +30,11 @@ def set_bot_commands():
         "command": k,
         "description": v
     } for k, v in BOT_COMMANDS.items()]
+    data = {
+        "commands": command_list
+    }
+    rep = requests.post(TG_SET_CMD_URL, json=data)
+    json_p(rep.json())
 
 
 def send_message(chai_id, text, message_id=None):
