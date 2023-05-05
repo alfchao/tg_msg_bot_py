@@ -1,8 +1,0 @@
-{
-	"name": "tg_msg_bot_py",
-	"version": "1.0.0",
-	"description": "功能简单的TG机器人",
-	"main": "api/index.py",
-	"author": "alfred",
-	"homepage": "https://github.com/alfred-nice"
-}

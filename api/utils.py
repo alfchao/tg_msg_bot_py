@@ -6,8 +6,9 @@
 @Author: Alfred
 
 """
-from api.env import *
 import requests
+
+from api.env import *
 
 
 def set_webhook():
@@ -22,12 +23,14 @@ def send_message(chai_id, text, message_id=None):
     url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage'
     data = {
         'chat_id': chai_id,
-        'text': text,
+        'text': replace_char(text),
         'parse_mode': PARSE_MODE
     }
     if message_id:
         data['reply_to_message_id'] = message_id
-    requests.post(url, data=data)
+    print(data)
+    rep = requests.post(url, data=data)
+    print(rep.json())
 
 
 # telegram MarkdownV2 字体样式
@@ -56,3 +59,11 @@ class Font:
 
 
 font = Font()
+
+REPLACED_CHARS = ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!']
+
+
+def replace_char(text: str):
+    for item in REPLACED_CHARS:
+        text = text.replace(item, '\\' + item)
+    return text

@@ -12,11 +12,11 @@ import traceback
 from flask import Flask, request
 
 from api.env import *
-from api.utils import set_webhook, send_message
+from api.utils import send_message
 
 
 def create_app():
-    set_webhook()
+    # set_webhook()
     app = Flask(__name__)
 
     @app.route('/')
@@ -36,6 +36,8 @@ def create_app():
             # 获取sendkey  title  desc
             sendkey = request.json.get('sendkey')
             text = request.json.get('text')
+        else:
+            return 'not support. '
         # 检查sendkey
         if not sendkey:
             return 'sendkey不能为空'
@@ -74,9 +76,9 @@ def create_app():
                 sendkey = chat_id + SALT
                 sendkey = hashlib.md5(sendkey.encode('utf-8')).hexdigest()
                 sendkey = f'`{chat_id}T{sendkey}`'
-                send_message(int(chat_id), f'Your sendkey 🔑 is {sendkey}\.\n'
-                             f'Use the url to send message: \n'
-                             f'{site_url}/api/send?sendkey=<sendkey>&text=<text>',  message_id)
+                send_message(int(chat_id), f'Your sendkey 🔑 is {sendkey}.'
+                                           f'Use the url to send message: '
+                                           f'{site_url}/api/send?sendkey=<sendkey>&text=<text>', message_id)
             else:
                 ret['msg'] = 'not support.'
         except:
