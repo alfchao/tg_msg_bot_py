@@ -6,31 +6,45 @@
 @Author: Alfred
 
 """
+import json
+
 import requests
 
 from api.env import *
 
 
+def json_p(text):
+    print(json.dumps(text, ensure_ascii=False, indent=4))
+
+
 def set_webhook():
-    set_webhook_url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/setWebhook'
     data = {
-        'url': f'https://{VERCEL_URL}/api'
+        'url': REC_MSG_URL
     }
-    requests.post(set_webhook_url, data=data)
+    rep = requests.post(TG_SET_WK_URL, data=data)
+    print(f'设置webhook结果， {rep.json()}')
+
+
+def set_bot_commands():
+    command_list = [{
+        "command": k,
+        "description": v
+    } for k, v in BOT_COMMANDS.items()]
 
 
 def send_message(chai_id, text, message_id=None):
-    url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage'
     data = {
         'chat_id': chai_id,
-        'text': replace_char(text),
-        'parse_mode': PARSE_MODE
+        'text': text
     }
+    if PARSE_MODE:
+        data['parse_mode'] = PARSE_MODE
     if message_id:
         data['reply_to_message_id'] = message_id
-    print(data)
-    rep = requests.post(url, data=data)
-    print(rep.json())
+    json_p(data)
+    rep = requests.post(TG_SEND_MSG_URL, data=data)
+    json_p(rep.json())
+    return rep.json()
 
 
 # telegram MarkdownV2 字体样式
@@ -59,11 +73,3 @@ class Font:
 
 
 font = Font()
-
-REPLACED_CHARS = ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!']
-
-
-def replace_char(text: str):
-    for item in REPLACED_CHARS:
-        text = text.replace(item, '\\' + item)
-    return text
