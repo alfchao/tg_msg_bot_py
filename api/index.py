@@ -8,7 +8,7 @@
 """
 import hashlib
 import traceback
-
+import requests
 from flask import Flask, request
 
 from api.env import *
@@ -90,6 +90,19 @@ def create_app():
             ret['code'] = 1
         json_p(ret)
         return ret
+    # 以bot开头的url，正则
+    @app.route('/bot<path:bot_api>', methods=['POST', 'GET'])
+    def bot(bot_api):
+        try:
+            print(f'bot_api: {bot_api}')
+            # 将请求转发给telegram api，get和post
+            if request.method == 'POST':
+                return requests.post(TELEGRAM_API_URL + request.full_path, json=request.json).json()
+            elif request.method == 'GET':
+                return requests.get(TELEGRAM_API_URL + request.full_path).json()
+        except:
+            print(traceback.format_exc())
+            return {'code': 1, 'msg': 'error'}
 
     return app
 

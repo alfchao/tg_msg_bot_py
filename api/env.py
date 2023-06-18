@@ -8,6 +8,7 @@
 """
 import os
 
+TELEGRAM_API_URL = 'https://api.telegram.org'
 TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
 SALT = os.environ.get('SALT')
 VERCEL_URL = os.environ.get('CUSTOM_DOMAINS')
@@ -15,7 +16,8 @@ SITE_URL = f'https://{VERCEL_URL}'
 REC_MSG_URL = f'{SITE_URL}/api'
 SEND_MSG_URL = f'{SITE_URL}/send'
 PARSE_MODE = os.environ.get('PARSE_MODE')
-ESCAPED_CHARS = ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!']
+ESCAPED_CHARS = ['_', '*', '[', ']',
+                 '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!']
 
 BOT_COMMANDS = {
     'start': 'get bot info.',
