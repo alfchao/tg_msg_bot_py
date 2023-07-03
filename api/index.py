@@ -8,6 +8,7 @@
 """
 import hashlib
 import traceback
+
 import requests
 from flask import Flask, request
 
@@ -94,12 +95,19 @@ def create_app():
     @app.route('/bot<path:bot_api>', methods=['POST', 'GET'])
     def bot(bot_api):
         try:
-            print(f'bot_api: {bot_api}')
             # 将请求转发给telegram api，get和post
+            print(dict(request.headers).get('Content-Type', ''))
             if request.method == 'POST':
-                return requests.post(TELEGRAM_API_URL + request.full_path, json=request.json).json()
+                if 'x-www-form-urlencoded' in dict(request.headers).get('Content-Type', ''):
+                    return requests.post(TELEGRAM_API_URL + request.full_path, json=dict(request.form)).json()
+                elif 'json' in dict(request.headers).get('Content-Type', ''):
+                    return requests.post(TELEGRAM_API_URL + request.full_path, json=request.json).json()
+                else:
+                    return {'code': 2, 'msg': 'error'}
             elif request.method == 'GET':
                 return requests.get(TELEGRAM_API_URL + request.full_path).json()
+            else:
+                return {'code': 3, 'msg': 'error'}
         except:
             print(traceback.format_exc())
             return {'code': 1, 'msg': 'error'}
