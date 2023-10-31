@@ -49,7 +49,7 @@ def create_app():
         if not sendkey or 'T' not in sendkey:
             return 'sendkey is invalid.'
         if not text:
-            return 'title不能为空'
+            return 'text不能为空'
         # 获取用户id
         send_user, user_key = sendkey.split('T', 1)
         # 检查sendkey
@@ -58,8 +58,8 @@ def create_app():
         # 发送消息
         return send_message(send_user, text)
 
-
     # receive message from telegram
+
     @app.route('/api', methods=['POST'])
     def api():
         ret = {'code': 0, 'msg': 'ok'}
@@ -92,6 +92,7 @@ def create_app():
         json_p(ret)
         return ret
     # 以bot开头的url，正则
+
     @app.route('/bot<path:bot_api>', methods=['POST', 'GET'])
     def bot(bot_api):
         try:
