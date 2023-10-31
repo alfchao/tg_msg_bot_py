@@ -21,7 +21,7 @@ def set_webhook():
     data = {
         'url': REC_MSG_URL
     }
-    rep = requests.post(TG_SET_WK_URL, data=data)
+    rep = requests.post(TG_SET_WK_URL, json=data)
     print(f'设置webhook结果， {rep.json()}')
 
 
@@ -47,7 +47,7 @@ def send_message(chai_id, text, message_id=None):
     if message_id:
         data['reply_to_message_id'] = message_id
     json_p(data)
-    rep = requests.post(TG_SEND_MSG_URL, data=data)
+    rep = requests.post(TG_SEND_MSG_URL, json=data)
     json_p(rep.json())
     return rep.json()
 

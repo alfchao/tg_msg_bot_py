@@ -9,9 +9,9 @@
 import os
 
 TELEGRAM_API_URL = 'https://api.telegram.org'
-TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
-SALT = os.environ.get('SALT')
-VERCEL_URL = os.environ.get('CUSTOM_DOMAINS')
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+SALT = os.environ.get('SALT', 'alfchao')
+VERCEL_URL = os.environ.get('CUSTOM_DOMAINS', '')
 SITE_URL = f'https://{VERCEL_URL}'
 REC_MSG_URL = f'{SITE_URL}/api'
 SEND_MSG_URL = f'{SITE_URL}/send'
